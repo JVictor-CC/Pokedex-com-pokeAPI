@@ -12,8 +12,15 @@ body{
 .content{
     padding: 1rem;
     background-color: #fff;
-    height: 100vh;
+    height: auto;
     width: 100vw;
+}
+
+/* Header */
+
+#country-label{
+    font-size: 20px;
+    margin: 20px 0 8px 0;
 }
 
 .pokemon-list{
@@ -147,15 +154,7 @@ body{
 
 /* Media Queries */
 
-@media screen and (min-width: 992px) {
-    .content{
-        margin: 1rem auto;
-        height: auto;
-        max-width: 992px;
-        border-radius: 10px;
-    }
-    
-}
+
 
 @media screen and (min-width: 768px) {
     
@@ -168,4 +167,17 @@ body{
         grid-template-columns: 1fr 1fr 1fr;
     }
     
+}
+
+@media screen and (min-width: 992px) {
+    .content{
+        margin: 1rem auto;
+        height: auto;
+        max-width: 992px;
+        border-radius: 10px;
+    }
+    
+    .pokemon-list{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
 }

@@ -4,8 +4,14 @@ const api = {}
 function convertToMyModel(details){
     const pokemon = new Pokemon()
     pokemon.name = details.name
-    pokemon.id = details.order
-    pokemon.image = details.sprites.other.dream_world.front_default
+    pokemon.id = details.id
+
+    if(details.id <= 649){
+        pokemon.image = details.sprites.other.dream_world.front_default
+    }else{
+        pokemon.image = details.sprites.front_default
+    }
+    
 
     const types = details.types.map(typeSlot => typeSlot.type.name)
     const [type] = types

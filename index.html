@@ -17,7 +17,20 @@
 
     <section class="content">
         <h1>Pokédex</h1>
-        
+        <label for="generation" id="generation-label">Generation</label>
+            <select name="generation" id="generation" required>
+                <option disabled selected value="">Choose a Generation</option>
+                <option value="1">First</option>
+                <option value="2">Second</option>
+                <option value="3">Third</option>
+                <option value="4">Fourth</option>
+                <option value="5">Fifth</option>
+                <option value="6">Sixth</option>
+                <option value="7">Seventh</option>
+                <option value="8">Eighth</option>
+            </select>
+            <button id="filter-btn">Filter</button>
+            
         <ol id="pokemon-list" class="pokemon-list">
             <!--Pokémon List-->
         </ol>
