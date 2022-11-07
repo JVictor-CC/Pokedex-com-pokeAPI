@@ -19,6 +19,12 @@ function convertToMyModel(details){
     pokemon.types = types
     pokemon.type = type
 
+    pokemon.height = details.height/10
+    pokemon.weight = details.weight/10
+
+    const stats = details.stats.map(statSlot => statSlot.base_stat)
+    pokemon.stats = stats
+
     return pokemon
 }
 
@@ -38,4 +44,13 @@ api.getPokemonList = (offset = 0,limit = 20) => {   //Pegando lista dos pokémon
         .then((pokemonList) => pokemonList.map(api.getPokemonDetails))
         .then(detailRequests => Promise.all(detailRequests))
         .then(pokemonDetails => pokemonDetails)
+}
+
+api.getPokemonById = (id) => {
+
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+
+    return fetch(url)
+        .then((response) => response.json())
+        .then(convertToMyModel)
 }
