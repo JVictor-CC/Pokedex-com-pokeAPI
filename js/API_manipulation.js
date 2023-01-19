@@ -21,9 +21,20 @@ function convertToMyModel(details){
 
     pokemon.height = details.height/10
     pokemon.weight = details.weight/10
+    const abilities = details.abilities.map(abilitiesSlot=> abilitiesSlot.ability.name)
+    pokemon.abilities = abilities
 
     const stats = details.stats.map(statSlot => statSlot.base_stat)
     pokemon.stats = stats
+
+    const moves = details.moves.map(moveSlot => moveSlot.move.name)
+    pokemon.moves = moves
+
+    const moveLvl = details.moves.map(moveSlot => moveSlot.version_group_details[0].level_learned_at)
+    pokemon.moveLvl = moveLvl
+
+    const moveMethod = details.moves.map(moveSlot => moveSlot.version_group_details[0].move_learn_method.name)
+    pokemon.moveMethod = moveMethod
 
     return pokemon
 }
@@ -49,6 +60,14 @@ api.getPokemonList = (offset = 0,limit = 20) => {   //Pegando lista dos pokémon
 api.getPokemonById = (id) => {
 
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+
+    return fetch(url)
+        .then((response) => response.json())
+        .then(convertToMyModel)
+}
+
+api.getSpeciesInfo = (id) => {
+    const url = `https://pokeapi.co/api/v2/pokemon-species/${id}`;
 
     return fetch(url)
         .then((response) => response.json())

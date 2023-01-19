@@ -3,7 +3,7 @@ const paginationBtn = document.getElementById('pagination-btn')
 const paginationBtnParent = document.querySelector('.pagination')
 const limit = 20
 let offset = 0
-const generation = [0,151,251,386,493,649,721,809,890] //8 gerações, até a 5 com as imagens corretas
+const generation = [0,151,251,386,493,649,721,809,890] //8 gerações
 var pokemonLimiter = generation[8]
 
 const gen = document.querySelector('#generation')
@@ -83,12 +83,107 @@ const showDetails = (id) => {
             const detailsBox = document.getElementById('details-overlay')
             updateHtml = `
             <div id="details-page" class="${details.type}">
-                <button type="button" onclick="pokemonDetailsToggle()">X</button>
+                <button class="back-btn" type="button" onclick="pokemonDetailsToggle()"><i class="fa-solid fa-arrow-left"></i></button>
                 <h2 class="pokemon-name">${details.name}</h2> 
                 <span class="pokemon-id">#${details.id}</span>
                 <img src="${details.image}" alt="imagem do pokemon ${details.name}">
+                <ol class="pokemon-types">
+                    ${details.types.map( type => `<li class="${type}">${type}</li>`).join('')}
+                </ol>
                 <div class="details-info">
-                    <div class="stats">
+                    <ul>
+                        <li>
+                            <input type="radio" checked="true" name="tabs" id="about" class="detail-tabs">
+                            <label for="about">About</label>
+                            <div class="tab-content">
+                                <div class="infos">
+                                <h3>About</h3>
+                                    <table class="about-tb">
+                                        <tr>
+                                            <td>Height</td>
+                                            <td class="${details.type}">${details.height} m</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Weight</td>
+                                            <td class="${details.type}">${details.weight} kg</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Abilities</td>
+                                            <td class="${details.type}">${details.abilities.map(ability => `<button class="${details.type}">${ability}</button>`).join('')}</td>
+                                        </tr>
+                                    </table>
+                                <div/>
+                            </div>
+                        </li>
+                        <li>
+                            <input type="radio" name="tabs" id="base-stats" class="detail-tabs">
+                            <label for="base-stats">Base Stats</label>
+                            <div class="tab-content">
+                                <div class="infos">
+                                    <h3>Stats</h3>
+                                    <table class="stats-tb">
+                                        <tr>
+                                            <td>HP</td>
+                                            <td class="${details.type}">${details.stats[0]}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Attack</td>
+                                            <td class="${details.type}">${details.stats[1]}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Defense</td>
+                                            <td class="${details.type}">${details.stats[2]}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Special Attack</td>
+                                            <td class="${details.type}">${details.stats[3]}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Special Defense</td>
+                                            <td class="${details.type}">${details.stats[4]}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Speed</td>
+                                            <td class="${details.type}">${details.stats[5]}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <input type="radio" name="tabs" id="moves" class="detail-tabs">
+                            <label for="moves">Moves</label>
+                            <div class="tab-content">
+                                <table class="moves-tb">
+                                    <tr>
+                                        <th>Move</th>
+                                        <th>Level</th>
+                                        <th>Method</th>
+                                    </tr>
+
+                                    ${details.moves.map((move, moveIncrement=0) => `
+                                        <tr>
+                                            <td>${move}</td>
+                                            <td class="${details.type}">${details.moveLvl[moveIncrement]}</td>
+                                            <td class="${details.type}">${details.moveMethod[moveIncrement++]}</td>
+                                        </tr>
+                                    `).join('')}
+                                    
+                                </table>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>`
+            detailsBox.innerHTML = updateHtml
+            
+        });
+}
+
+/*
+
+
+                <div class="stats">
                         <h3>stats</h3>
                         <table>
                             <tr>
@@ -117,9 +212,4 @@ const showDetails = (id) => {
                             </tr>
                       </table>
                     </div>
-                </div>
-            </div>`
-            detailsBox.innerHTML = updateHtml
-            
-        });
-}
+*/

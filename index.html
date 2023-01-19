@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="css/details.css">
     <link rel="stylesheet" href="css/global.css">
-    
+    <script src="https://kit.fontawesome.com/552e66fa02.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -19,7 +19,7 @@
 
     <section class="content">
         <div class="header">
-            <h1>Pokédex</h1>
+            <img width="350px" src="images/logo.png" alt="Pokédex logo">
             <div>
                 <label for="generation" id="generation-label">Generation</label>
                 <select name="generation" id="generation" required>
@@ -37,7 +37,9 @@
                 <button id="filter-btn">Filter</button> 
             </div> 
         </div>
-        
+        <button class="filter-btn">
+            <i class="fa-solid fa-arrow-down-wide-short"></i>Advanced Search
+        </button>  
             
         <ol id="pokemon-list" class="pokemon-list">
             <!--Pokémon List-->
@@ -54,45 +56,12 @@
     <!--Details-->
 
     <div id="details-overlay">
-        <!--
+        
         <div id="details-page">
-            <button type="button" onclick="pokemonDetailsToggle()">X</button>
-            <h3>Charmander</h3>
-            <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/004.png" alt="">
-            <div class="details-info">
-                <div class="stats">
-                    <h3>stats</h3>
-                    <table>
-                        <tr>
-                            <td>HP</td>
-                            <td>valor</td>
-                        </tr>
-                        <tr>
-                            <td>Attack</td>
-                            <td>valor</td>
-                        </tr>
-                        <tr>
-                            <td>Defense</td>
-                            <td>valor</td>
-                        </tr>
-                        <tr>
-                            <td>Special Attack</td>
-                            <td>valor</td>
-                        </tr>
-                        <tr>
-                            <td>Special Defense</td>
-                            <td>valor</td>
-                        </tr>
-                        <tr>
-                            <td>Speed</td>
-                            <td>valor</td>
-                        </tr>
-                      </table>
-                      
-                </div>
-            </div>
+            
+            
         </div>
-        -->
+        
     </div>
     
 
