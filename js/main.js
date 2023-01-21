@@ -69,20 +69,21 @@ paginationBtn.addEventListener('click', () => {
 })
 
 
-
 const pokemonDetailsToggle = () => {
     document.querySelector('#details-overlay').classList.toggle('toggle-details');
 }
 
 // show details of a specific pokemon
 const showDetails = (id) => {
-    api.getPokemonById(id)
+    api.getPokemonInfo(id)
         .then((details) => {
             pokemonDetailsToggle()
             
+            type = details.type
+
             const detailsBox = document.getElementById('details-overlay')
             updateHtml = `
-            <div id="details-page" class="${details.type}">
+            <div id="details-page" class="${type}">
                 <button class="back-btn" type="button" onclick="pokemonDetailsToggle()"><i class="fa-solid fa-arrow-left"></i></button>
                 <h2 class="pokemon-name">${details.name}</h2> 
                 <span class="pokemon-id">#${details.id}</span>
@@ -96,22 +97,9 @@ const showDetails = (id) => {
                             <input type="radio" checked="true" name="tabs" id="about" class="detail-tabs">
                             <label for="about">About</label>
                             <div class="tab-content">
-                                <div class="infos">
-                                <h3>About</h3>
-                                    <table class="about-tb">
-                                        <tr>
-                                            <td>Height</td>
-                                            <td class="${details.type}">${details.height} m</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Weight</td>
-                                            <td class="${details.type}">${details.weight} kg</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Abilities</td>
-                                            <td class="${details.type}">${details.abilities.map(ability => `<button class="${details.type}">${ability}</button>`).join('')}</td>
-                                        </tr>
-                                    </table>
+                                <div class="infos" id="about-info">
+                                
+                                    
                                 <div/>
                             </div>
                         </li>
@@ -124,27 +112,27 @@ const showDetails = (id) => {
                                     <table class="stats-tb">
                                         <tr>
                                             <td>HP</td>
-                                            <td class="${details.type}">${details.stats[0]}</td>
+                                            <td class="${type}">${details.stats[0]}</td>
                                         </tr>
                                         <tr>
                                             <td>Attack</td>
-                                            <td class="${details.type}">${details.stats[1]}</td>
+                                            <td class="${type}">${details.stats[1]}</td>
                                         </tr>
                                         <tr>
                                             <td>Defense</td>
-                                            <td class="${details.type}">${details.stats[2]}</td>
+                                            <td class="${type}">${details.stats[2]}</td>
                                         </tr>
                                         <tr>
                                             <td>Special Attack</td>
-                                            <td class="${details.type}">${details.stats[3]}</td>
+                                            <td class="${type}">${details.stats[3]}</td>
                                         </tr>
                                         <tr>
                                             <td>Special Defense</td>
-                                            <td class="${details.type}">${details.stats[4]}</td>
+                                            <td class="${type}">${details.stats[4]}</td>
                                         </tr>
                                         <tr>
                                             <td>Speed</td>
-                                            <td class="${details.type}">${details.stats[5]}</td>
+                                            <td class="${type}">${details.stats[5]}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -164,8 +152,8 @@ const showDetails = (id) => {
                                     ${details.moves.map((move, moveIncrement=0) => `
                                         <tr>
                                             <td>${move}</td>
-                                            <td class="${details.type}">${details.moveLvl[moveIncrement]}</td>
-                                            <td class="${details.type}">${details.moveMethod[moveIncrement++]}</td>
+                                            <td class="${type}">${details.moveLvl[moveIncrement]}</td>
+                                            <td class="${type}">${details.moveMethod[moveIncrement++]}</td>
                                         </tr>
                                     `).join('')}
                                     
@@ -176,40 +164,57 @@ const showDetails = (id) => {
                 </div>
             </div>`
             detailsBox.innerHTML = updateHtml
+
+
+            aux = `
+                <tr>
+                    <td>Height</td>
+                    <td class="${type}">${details.height} m</td>
+                </tr>
+                <tr>
+                    <td>Weight</td>
+                    <td class="${type}">${details.weight} kg</td>
+                </tr>
+                <tr>
+                    <td>Abilities</td>
+                    <td class="${type}">${details.abilities.map(ability => `<p>${ability}</p>`).join('')}</td>
+                </tr>
+            `
+
+            return api.getSpeciesInfo(id)
+
+        })
+        .then(sepeciesDetails => {
             
-        });
+            const aboutInfo = document.getElementById('about-info')
+            update = `
+                <h3>About</h3>
+                <p class="${type} about-text">${sepeciesDetails.aboutText}</p>
+                <p class="about-species">Species: ${sepeciesDetails.species}</p>
+                <div class="about-gender"><p>Gender rate: </p>${sepeciesDetails.genderRate}</div>
+                <h3>species information</h3>
+                <table class="about-tb">           
+
+                </table>
+            `
+            aboutInfo.innerHTML += update
+            
+            const speciesInfo = document.querySelector('.about-tb')
+            speciesInfo.innerHTML += aux
+
+            updateHtml = `
+            <tr>
+                <td>Habitat</td>
+                <td class="${type}">${sepeciesDetails.habitat}</td>
+            </tr>
+            <tr>
+                <td>Egg Groups</td>
+                <td class="${type}">${sepeciesDetails.eggGroup.map(group => `<p>${group}</p>`).join('')}</td>
+            </tr>     
+            `
+            speciesInfo.innerHTML += updateHtml
+            
+            
+            
+        })
 }
-
-/*
-
-
-                <div class="stats">
-                        <h3>stats</h3>
-                        <table>
-                            <tr>
-                                <td>HP</td>
-                                <td>${details.stats[0]}</td>
-                            </tr>
-                            <tr>
-                                <td>Attack</td>
-                                <td>${details.stats[1]}</td>
-                            </tr>
-                            <tr>
-                                <td>Defense</td>
-                                <td>${details.stats[2]}</td>
-                            </tr>
-                            <tr>
-                                <td>Special Attack</td>
-                                <td>${details.stats[3]}</td>
-                            </tr>
-                            <tr>
-                                <td>Special Defense</td>
-                                <td>${details.stats[4]}</td>
-                            </tr>
-                            <tr>
-                                <td>Speed</td>
-                                <td>${details.stats[5]}</td>
-                            </tr>
-                      </table>
-                    </div>
-*/
