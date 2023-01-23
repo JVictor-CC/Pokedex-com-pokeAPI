@@ -28,9 +28,21 @@ function pokemonListToLi(pokemon){
     `
 }
 
-function loadMorePokemon(offset,limit, reload = 0){     //função para carregar mais pokemon
+function loadMorePokemon(offset,limit, reload = 0, type ='all types'){     //função para carregar mais pokemon
+    console.log(limit)
     api.getPokemonList(offset,limit).then( (pokemonList = []) => {
-        updateList = pokemonList.map( pokemon => pokemonListToLi(pokemon)).join('')
+        updateList = pokemonList.map( pokemon => {
+            if(type === 'all types'){
+                return pokemonListToLi(pokemon)
+            }else{
+                if(type === pokemon.type){
+                    return pokemonListToLi(pokemon)
+                }
+            }
+            
+
+        }).join('')
+
         if(reload == 0){
             insertPokemonLi.innerHTML += updateList
         }else{
@@ -42,56 +54,6 @@ function loadMorePokemon(offset,limit, reload = 0){     //função para carregar
 
 loadMorePokemon(offset,limit)
 
-const FilterToggle = () => {
-    document.querySelector('#filter-show').classList.toggle('toggle-filter');
-
-    document.querySelector('#filter-show').innerHTML = `
-    <div class="filter-options">
-        <div class="filter-regions">
-            <h3>Regions</h3>
-            <ul class="filter-radio-list">
-                ${regions.map(region => `
-                <li>
-                    <input type="radio" name="region" class="radio-options" id="region-${region}">
-                    <label for="region-${region}" class="radio-labels">${region}</label>
-                </li>
-                `).join('')}
-            </ul>
-        </div>
-        <div class="filter-types">
-            <h3>Types</h3>
-            <ul class="filter-radio-list">
-                ${pokemonTypes.map(type => `
-                <li>
-                    <input type="radio" name="type" class="radio-options" id="type-${type}">
-                    <label for="type-${type}" class="${type} radio-labels">${type}</label>
-                </li>
-                `).join('')}
-            </ul>
-        </div>
-    </div>
-    <div class="filter-submit">
-        <button id="reset-btn">Reset</button>
-        <button type="submit" id="filter-btn">Search</button>
-    </div>
-    `
-}
-/*
-filterBtn.onclick = (event) => {
-    event.preventDefault();
-    paginationBtnParent.appendChild(paginationBtn)
-
-    if(gen.value == 9){
-        offset = 0
-        pokemonLimiter = generation[8]
-        loadMorePokemon(offset,limit,1)
-    }else{
-        offset = generation[gen.value-1]
-        pokemonLimiter = generation[gen.value]
-        loadMorePokemon(offset,limit,1)
-    }
-};
-*/
 paginationBtn.addEventListener('click', () => {
     offset+=limit
 
@@ -256,4 +218,86 @@ const showDetails = (id) => {
             
             
         })
+}
+
+
+/* Advanced search */
+
+const FilterToggle = () => {
+    document.querySelector('#filter-show').classList.toggle('toggle-filter');
+
+    document.querySelector('#filter-show').innerHTML = `
+    <div class="filter-options">
+        <div class="filter-regions">
+            <h3>Regions</h3>
+            <ul class="filter-radio-list">
+                ${regions.map((region, value=0) => `
+                <li>
+                    <input type="radio" name="region" class="radio-options region-options" id="region-${region}" value="${value++}" >
+                    <label for="region-${region}" class="radio-labels">${region}</label>
+                </li>
+                `).join('')}
+            </ul>
+        </div>
+        <div class="filter-types">
+            <h3>Types</h3>
+            <ul class="filter-radio-list">
+                ${pokemonTypes.map( (type) => `
+                <li>
+                    <input type="radio" name="type" class="radio-options type-options" id="type-${type}" value="${type}" >
+                    <label for="type-${type}" class="${type} radio-labels">${type}</label>
+                </li>
+                `).join('')}
+            </ul>
+        </div>
+    </div>
+    <div class="filter-submit">
+        <button id="reset-btn" onclick="resetFilters()">Reset</button>
+        <button type="submit" id="filter-btn" onclick="applyFilters()">Search</button>
+    </div>
+    `
+    
+}
+
+applyFilters = () => {
+    paginationBtnParent.removeChild(paginationBtn)
+    const radiosRegion = document.getElementsByClassName("region-options");
+    const radiosTypes = document.getElementsByClassName("type-options")
+    var typeChosen
+    var regionChosen = 8
+
+    for (var i = 0; i < radiosTypes.length; i++) {
+        if (radiosTypes[i].checked) {
+            typeChosen = radiosTypes[i].value
+        }
+    }
+
+    console.log(typeChosen)
+
+    for (var i = 0; i < radiosRegion.length; i++) {
+        if (radiosRegion[i].checked) {
+            regionChosen = parseInt(radiosRegion[i].value)
+            console.log(regionChosen);
+            if(regionChosen == 8){
+                offset = 0
+                pokemonLimiter = generation[8]
+                loadMorePokemon(offset,pokemonLimiter,1,typeChosen)
+            }else{
+                offset = generation[regionChosen]
+                pokemonLimiter = generation[regionChosen+1]
+                loadMorePokemon(offset,pokemonLimiter,1,typeChosen)
+            }
+        }
+
+    } 
+    
+
+    document.querySelector('#filter-show').classList.toggle('toggle-filter'); 
+};
+
+resetFilters = ()=> {
+    document.querySelector('#filter-show').classList.toggle('toggle-filter');
+    offset = 0
+    loadMorePokemon(offset,limit,1)
+    paginationBtnParent.appendChild(paginationBtn)
 }
