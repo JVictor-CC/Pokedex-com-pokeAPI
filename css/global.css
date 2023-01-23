@@ -13,33 +13,176 @@ body{
     background-color: #313131;
     color: #fff;
     padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#search-bar-label{
+    display: none;
+}
+
+.header form{
+    background-color: #fff;
+    width: 350px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    margin-top: 25px;
+}
+
+#search-bar{
+    outline: none;
+    border: none;
+    flex: 1;
+}
+
+.search-bar-button{
+    background-color: #d36855;
+    padding-inline: 15px;
+    height: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #fff;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.search-bar-button:hover{
+    background-color: #bd604f;
+}
+
+.fa-magnifying-glass{
+    color: #616161;
+    font-size: 18px;
+    margin-inline: 10px;
 }
 
 /* Filter */
 
-.filter-btn{
+.filter-bar{
     background-color: #616161;
+    margin-bottom: 10px;
+    margin: 0;
+}
+
+#filter-show{
+    height: 0px;
+    overflow: hidden;
+    position: relative;
+    transition: 0.5s;
+}
+
+#filter-show.toggle-filter{
+    height: 600px;
+    transition: 0.5s;
+}
+
+.filter-options{
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #454545;
+    margin: 30px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.filter-options h3{
+    margin-inline: 10px;
+}
+
+.filter-regions{
+    flex: 1;
+}
+
+.filter-types{
+    flex: 2;
+}
+
+.filter-submit{
+    flex-basis: 100%;
+    text-align: center;
+}
+
+.filter-submit button{
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 30px;
+    cursor: pointer;
+    margin-inline: 10px;
+    transition: 0.5s;
+}
+
+#filter-btn{
+    background-color: #d36855;
+}
+
+#filter-btn:hover{
+    background-color: #c0511d;
+}
+
+#reset-btn{
+    background-color: #a4a4a4;
+}
+
+#reset-btn:hover{
+    background-color: #888282;
+}
+
+.filter-radio-list{  /**/
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    justify-content: center;
+}
+
+.filter-radio-list li{
+    list-style: none;
+    flex-basis: 40%;
+    margin: 5px 5px;
+}
+
+.radio-labels{ 
+    text-align: center;
+    padding: 5px;
+    border-radius: 10px;
+    display: block;
+    text-transform: capitalize;
+    cursor: pointer;
+    background-color: #313131;
+}
+
+.radio-options{
+    display: none;
+}
+
+.radio-options:checked ~ .radio-labels{
+    border: solid 4px black;
+    transition: 0.5s;
+}
+
+.advanced-search{
+    background-color: #525252;
     width: 100%;
     height: 40px;
-    margin-bottom: 10px;
     font-size: 20px;
     color: #ffffff;
     border: none;
     transition: 0.5s;
 }
 
-.filter-btn:hover{
+.advanced-search:hover{
     cursor: pointer;
     background-color: #454545;
     transition: 0.5s;
 }
 
-
-#generation-label{
-    font-size: 20px;
-    margin: 20px 0 8px 0;
-    display: block;
-}
+  
+/* pokemon list */
 
 .content{
     background-color: #fff;
@@ -191,6 +334,35 @@ body{
 
 @media screen and (min-width: 768px) {
     
+    .header{
+        justify-content: space-between;
+    }
+
+    .header form{
+        margin-top: 0;
+    }
+
+    .filter-regions{
+        flex: 1;
+        margin: 0 25px 25px 25px;
+    }
+
+    .filter-types{
+        flex: 1;
+        margin: 0 25px 25px 25px;
+    }
+
+    .filter-radio-list{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+        justify-content: center;
+    }
+
+    #filter-show.toggle-filter{
+        height: 630px;
+        transition: 0.5s;
+    }
     
 }
 
@@ -200,11 +372,6 @@ body{
         grid-template-columns: 1fr 1fr 1fr;
     }
 
-    .header{
-        display: flex;
-        justify-content: space-between;
-    }
-    
 }
 
 @media screen and (min-width: 992px) {

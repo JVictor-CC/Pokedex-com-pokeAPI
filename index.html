@@ -21,25 +21,27 @@
         <div class="header">
             <img width="350px" src="images/logo.png" alt="Pokédex logo">
             <div>
-                <label for="generation" id="generation-label">Generation</label>
-                <select name="generation" id="generation" required>
-                    <option disabled selected value="">Choose a Generation</option>
-                    <option value="1">First</option>
-                    <option value="2">Second</option>
-                    <option value="3">Third</option>
-                    <option value="4">Fourth</option>
-                    <option value="5">Fifth</option>
-                    <option value="6">Sixth</option>
-                    <option value="7">Seventh</option>
-                    <option value="8">Eighth</option>
-                    <option value="9">All</option>
-                </select>
-                <button id="filter-btn">Filter</button> 
+                <form role="search">
+                    <label for="search-bar" id="search-bar-label">Search</label>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="search" name="search-bar" id="search-bar" placeholder="Type a pokemon name or id...">
+                    <button type="submit" class="search-bar-button">Search</button>
+                </form>
             </div> 
         </div>
-        <button class="filter-btn">
-            <i class="fa-solid fa-arrow-down-wide-short"></i>Advanced Search
-        </button>  
+        <div class="filter-bar">
+            <div id="filter-show">
+                <!--
+                    Advanced Search
+                 --> 
+            
+            </div>
+            
+            <button class="advanced-search" onclick="FilterToggle()">
+                <i class="fa-solid fa-arrow-down-wide-short"></i>Advanced Search
+            </button>
+        </div>
+        
             
         <ol id="pokemon-list" class="pokemon-list">
             
@@ -50,7 +52,7 @@
     
     <div class="pagination">
         <button id="pagination-btn" type="button">
-            Load More Pokémon
+            <i class="fa-solid fa-spinner"></i>  Load More Pokémon
         </button>
     </div>
 

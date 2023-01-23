@@ -16,6 +16,11 @@
     overflow-y: scroll;
 }
 
+#details-overlay.toggle-details{
+    opacity: 1;
+    visibility: visible;
+}
+
 #details-page{
     width: 100vw;
     height: 100vh;
@@ -37,12 +42,6 @@
 
 #details-page button{
     align-self: flex-start;
-}
-
-
-#details-overlay.toggle-details{
-    opacity: 1;
-    visibility: visible;
 }
 
 .details-info{

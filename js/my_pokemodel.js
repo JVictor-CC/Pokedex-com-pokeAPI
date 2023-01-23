@@ -1,10 +1,20 @@
 class Pokemon{
     name;
     id;
+    image;
     types = [];
     type;
-    image;
     height;
     weight;
-    stats;
+    abilities = [];
+    stats = [];
+    moves = [];
+    moveLvl = [];
+    moveMethod = [];
+
+    habitat;
+    eggGroup = [];
+    aboutText;
+    species;
+    genderRate;
 }
