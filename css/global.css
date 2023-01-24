@@ -23,7 +23,7 @@ body{
     display: none;
 }
 
-.header form{
+.white-bar{
     background-color: #fff;
     width: 350px;
     height: 40px;
@@ -338,7 +338,7 @@ body{
         justify-content: space-between;
     }
 
-    .header form{
+    .white-bar{
         margin-top: 0;
     }
 

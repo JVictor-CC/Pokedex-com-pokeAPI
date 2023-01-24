@@ -9,8 +9,8 @@ let offset = 0
 
 const generation = [0,151,251,386,493,649,721,809,890] //8 gerações
 var pokemonLimiter = generation[8]
-const regions = ["kanto", "johto", "hoenn", "sinnoh", "unova", "kalos", "alola", "galar", "all"]
-const pokemonTypes = ["bug", "dragon", "fairy", "fire", "ghost", "ground", "normal", "psychic", "steel", "dark", "electric", "fighting", "flying", "grass", "ice", "poison", "rock", "water", "all types"]
+const regions = ["kanto", "johto", "hoenn", "sinnoh", "unova", "kalos", "alola", "galar"]
+const pokemonTypes = ["bug", "dragon", "fairy", "fire", "ghost", "ground", "normal", "psychic", "steel", "dark", "electric", "fighting", "flying", "grass", "ice", "poison", "rock", "water", "all-types"]
 
 
 
@@ -28,11 +28,10 @@ function pokemonListToLi(pokemon){
     `
 }
 
-function loadMorePokemon(offset,limit, reload = 0, type ='all types'){     //função para carregar mais pokemon
-    console.log(limit)
+function loadMorePokemon(offset,limit, reload = 0, type ='all-types'){     //função para carregar mais pokemon
     api.getPokemonList(offset,limit).then( (pokemonList = []) => {
         updateList = pokemonList.map( pokemon => {
-            if(type === 'all types'){
+            if(type === 'all-types'){
                 return pokemonListToLi(pokemon)
             }else{
                 if(type === pokemon.type){
@@ -52,7 +51,6 @@ function loadMorePokemon(offset,limit, reload = 0, type ='all types'){     //fun
     })
 }
 
-loadMorePokemon(offset,limit)
 
 paginationBtn.addEventListener('click', () => {
     offset+=limit
@@ -256,15 +254,16 @@ const FilterToggle = () => {
         <button type="submit" id="filter-btn" onclick="applyFilters()">Search</button>
     </div>
     `
-    
+    document.querySelector("#type-all-types").checked = true
+    document.querySelector("#region-kanto").checked = true
 }
 
 applyFilters = () => {
-    paginationBtnParent.removeChild(paginationBtn)
+    
     const radiosRegion = document.getElementsByClassName("region-options");
     const radiosTypes = document.getElementsByClassName("type-options")
-    var typeChosen
-    var regionChosen = 8
+    var typeChosen = 'all-types'
+    var regionChosen = 0
 
     for (var i = 0; i < radiosTypes.length; i++) {
         if (radiosTypes[i].checked) {
@@ -272,28 +271,22 @@ applyFilters = () => {
         }
     }
 
-    console.log(typeChosen)
-
     for (var i = 0; i < radiosRegion.length; i++) {
         if (radiosRegion[i].checked) {
             regionChosen = parseInt(radiosRegion[i].value)
-            console.log(regionChosen);
-            if(regionChosen == 8){
-                offset = 0
-                pokemonLimiter = generation[8]
-                loadMorePokemon(offset,pokemonLimiter,1,typeChosen)
-            }else{
-                offset = generation[regionChosen]
-                pokemonLimiter = generation[regionChosen+1]
-                loadMorePokemon(offset,pokemonLimiter,1,typeChosen)
-            }
+            console.log(regionChosen)
+            offset = generation[regionChosen]
+            console.log(offset)
+            pokemonLimiter = generation[regionChosen+1]-offset
+            console.log(pokemonLimiter)
+            loadMorePokemon(offset,pokemonLimiter,1,typeChosen)
+        
         }
 
     } 
-    
 
     document.querySelector('#filter-show').classList.toggle('toggle-filter'); 
-};
+}
 
 resetFilters = ()=> {
     document.querySelector('#filter-show').classList.toggle('toggle-filter');
@@ -301,3 +294,29 @@ resetFilters = ()=> {
     loadMorePokemon(offset,limit,1)
     paginationBtnParent.appendChild(paginationBtn)
 }
+
+
+/* Search bar */
+const searchBar = document.getElementById("search-bar")
+
+searchBar.addEventListener('keypress', (e) => {
+    let userData = e.target.value
+
+    if (e.key === "Enter") {
+        if(userData){
+            e.preventDefault();
+            showDetails(userData.trim().toLowerCase()); 
+        }
+    }
+});
+
+const searchButton = () => {
+    let userData = searchBar.value
+
+    if(userData){
+        showDetails(userData.trim().toLowerCase()); 
+    }
+}
+
+const searchHelper = api.searchBar()
+loadMorePokemon(offset,limit)

@@ -95,38 +95,48 @@ function convertToMyModel(pokeDetails='',speciesDetails = ''){
     return poke
 }
 
-api.getPokemonDetails = pokemon => {    //Pegando detalhes de cada pokémon
-    return fetch(pokemon.url)
-        .then(response => response.json())
-        .then(convertToMyModel)
+api.getPokemonDetails = async pokemon => {    //Pegando detalhes de cada pokémon
+    const response = await fetch(pokemon.url)
+    const pokeDetails = await response.json()
+    return convertToMyModel(pokeDetails)
 }
 
-api.getPokemonList = (offset = 0,limit = 20) => {   //Pegando lista dos pokémon
+api.getPokemonList = async (offset = 0,limit = 20) => {   //Pegando lista dos pokémon
     
     const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
     
-    return fetch(url)
-        .then( response => response.json())
-        .then(json => json.results)
-        .then((pokemonList) => pokemonList.map(api.getPokemonDetails))
-        .then(detailRequests => Promise.all(detailRequests))
-        .then(pokemonDetails => pokemonDetails)
+    const response = await fetch(url)
+    const json = await response.json()
+    const pokemonList = json.results
+    const detailRequests = pokemonList.map(api.getPokemonDetails)
+    const pokemonDetails = await Promise.all(detailRequests)
+    return pokemonDetails
 }
 
-api.getPokemonInfo = (id) => {
+api.getPokemonInfo = async (id) => {
 
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
 
-    return fetch(url)
-        .then((response) => response.json())
-        .then(data => convertToMyModel(data,''))
+    const response = await fetch(url)
+    const data = await response.json()
+    return convertToMyModel(data, '')
 }
 
-api.getSpeciesInfo = (id) => {
+api.getSpeciesInfo = async (id) => {
 
     const url = `https://pokeapi.co/api/v2/pokemon-species/${id}`;
 
-    return fetch(url)
-        .then((response) => response.json())
-        .then(data => convertToMyModel('',data))
+    const response = await fetch(url)
+    const data = await response.json()
+    return convertToMyModel('', data)
 }
+
+api.searchBar = async () => {
+    const url = `https://pokeapi.co/api/v2/pokemon?limit=890&offset=0`;
+
+    const response = await fetch(url)
+    const json = await response.json()
+    const pokemonList = json.results
+    return pokemonList.map(names=> names.name)
+}
+
