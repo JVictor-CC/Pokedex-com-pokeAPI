@@ -8,7 +8,12 @@ function convertToMyModel(pokeDetails='',speciesDetails = ''){
         poke.id = pokeDetails.id
 
         
-        poke.image = pokeDetails.sprites.other['official-artwork'].front_default
+        //poke.image = pokeDetails.sprites.other['official-artwork'].front_default
+        if(pokeDetails.id<650){
+            poke.image = pokeDetails.sprites.other.dream_world.front_default
+        }else{
+            poke.image = pokeDetails.sprites.other['official-artwork'].front_default
+        }
         
         
 

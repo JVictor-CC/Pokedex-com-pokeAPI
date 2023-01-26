@@ -274,15 +274,10 @@ applyFilters = () => {
     for (var i = 0; i < radiosRegion.length; i++) {
         if (radiosRegion[i].checked) {
             regionChosen = parseInt(radiosRegion[i].value)
-            console.log(regionChosen)
             offset = generation[regionChosen]
-            console.log(offset)
             pokemonLimiter = generation[regionChosen+1]-offset
-            console.log(pokemonLimiter)
             loadMorePokemon(offset,pokemonLimiter,1,typeChosen)
-        
         }
-
     } 
 
     document.querySelector('#filter-show').classList.toggle('toggle-filter'); 
